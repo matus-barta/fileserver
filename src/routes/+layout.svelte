@@ -23,7 +23,7 @@
 			<span>
 				{data.hostname}
 				<span class="text-sm font-light italic">running on</span>
-				<span>somthing</span>
+				<span>{data.prettyName}</span>
 			</span>
 		</header>
 		<div class="flex flex-1 flex-col gap-4 p-4">

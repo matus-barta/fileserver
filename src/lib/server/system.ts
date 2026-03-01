@@ -1,12 +1,13 @@
 import os from 'os';
-import fs from 'fs';
+import { readFileSync } from 'fs';
+import { parseOsRelease } from '$lib/utils/osRelease';
 
 export const hostname = () => os.hostname();
 
-export const osRelease = () => {
+export const osPrettyName = () => {
 	try {
-		const data = fs.readFileSync('/etc/os-release', 'utf-8');
-		console.log(data);
+		const data = readFileSync('/etc/os-release', 'utf-8');
+		return parseOsRelease(data).PRETTY_NAME;
 	} catch (err) {
 		console.error(err);
 	}
