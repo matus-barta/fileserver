@@ -11,7 +11,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import Github from '@lucide/svelte/icons/github';
 
-	let { data, children, params }: LayoutProps = $props();
+	let { data, children }: LayoutProps = $props();
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>

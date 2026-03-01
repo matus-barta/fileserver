@@ -11,6 +11,9 @@ importers:
       mode-watcher:
         specifier: ^1.1.0
         version: 1.1.0(svelte@5.53.6)
+      node-os-utils:
+        specifier: ^2.0.1
+        version: 2.0.1
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.2
@@ -1311,6 +1314,10 @@ packages:
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
+
+  node-os-utils@2.0.1:
+    resolution: {integrity: sha512-rH2N3qHZETLhdgTGhMMCE8zU3gsWO4we1MFtrSiAI7tYWrnJRc6dk2PseV4co3Lb0v/MbRONLQI2biHQYbpTpg==}
+    engines: {node: '>=18.0.0'}
 
   obug@2.1.1:
     resolution: {integrity: sha512-uTqF9MuPraAQ+IsnPf366RG4cP9RtUi7MLO1N3KEc+wb0a6yKpeL0lmk2IB1jY5KHPAlTc6T/JRdC/YqxHNwkQ==}
@@ -2856,6 +2863,8 @@ snapshots:
   nanoid@3.3.11: {}
 
   natural-compare@1.4.0: {}
+
+  node-os-utils@2.0.1: {}
 
   obug@2.1.1: {}
 
