@@ -1,5 +1,7 @@
 import type { LayoutLoad } from './$types';
 
+export const ssr = false;
+
 export const load: LayoutLoad = async ({ fetch, data }) => {
 	const ghUrl = 'https://api.github.com/repos/matus-barta/fileserver';
 	interface ghApi {
