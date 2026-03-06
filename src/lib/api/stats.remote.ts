@@ -16,7 +16,7 @@ export const usedMemory = query(async () => {
 	// Get memory information
 	const memInfo = await osutils.memory.info();
 	if (memInfo.success) {
-		return memInfo.data.used.toMB();
+		return memInfo.data.used.toBytes();
 	}
 	return 0;
 });
@@ -25,7 +25,7 @@ export const availableMemory = query(async () => {
 	// Get memory information
 	const memInfo = await osutils.memory.info();
 	if (memInfo.success) {
-		return memInfo.data.total.toMB();
+		return memInfo.data.total.toBytes();
 	}
 	return 0;
 });

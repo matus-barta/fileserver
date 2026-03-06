@@ -1,21 +1,22 @@
-// import { networkInterfaces, uptime } from 'os';
 import type { PageServerLoad } from './$types';
 
+import { addresses } from '$lib/server/network';
+import { cpuCores, cpuModel, uptime, volumeFree, volumeSize } from '$lib/server/system';
+
 export const load: PageServerLoad = async () => {
-	// const interfaces = networkInterfaces();
-	// const addresses = [];
-	// for (const iface of Object.values(interfaces)) {
-	// 	if (!iface) continue;
-
-	// 	for (const address of iface) {
-	// 		if (address.family === 'IPv4' && !address.internal) {
-	// 			addresses.push(address.address);
-	// 		}
-	// 	}
-	// }
-
 	return {
-		// uptime: uptime(),
-		// addresses
+		uptime: uptime(),
+		addresses: addresses(),
+		cpu: {
+			model: cpuModel(),
+			cores: await cpuCores()
+		},
+		volumes: [
+			{
+				path: '/',
+				free: volumeFree('/'),
+				size: volumeSize('/')
+			}
+		]
 	};
 };
