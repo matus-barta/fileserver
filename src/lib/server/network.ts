@@ -1,5 +1,4 @@
 import { networkInterfaces } from 'os';
-
 export interface AddressInfo {
 	iface: string;
 	address: string;

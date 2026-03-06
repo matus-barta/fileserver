@@ -16,6 +16,11 @@ export const load: PageServerLoad = async () => {
 				path: '/',
 				free: volumeFree('/'),
 				size: volumeSize('/')
+			},
+			{
+				path: '/mnt/smb',
+				free: volumeFree('/mnt/smb'),
+				size: volumeSize('/mnt/smb')
 			}
 		]
 	};
