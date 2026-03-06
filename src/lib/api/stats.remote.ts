@@ -9,6 +9,7 @@ export const avgCpuUsage = query(async () => {
 	if (cpuUsage.success) {
 		return cpuUsage.data;
 	}
+	return 0;
 });
 
 export const usedMemory = query(async () => {
@@ -17,6 +18,7 @@ export const usedMemory = query(async () => {
 	if (memInfo.success) {
 		return memInfo.data.used.toMB();
 	}
+	return 0;
 });
 
 export const availableMemory = query(async () => {
@@ -25,4 +27,5 @@ export const availableMemory = query(async () => {
 	if (memInfo.success) {
 		return memInfo.data.total.toMB();
 	}
+	return 0;
 });
