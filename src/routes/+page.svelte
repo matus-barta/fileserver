@@ -59,29 +59,31 @@
 			</Card.Header>
 			<Card.Content>
 				<div class="flex flex-col gap-3">
-					<div class="grid grid-cols-2 items-center gap-x-2 gap-y-1">
-						<span>IP</span>
-						<span class="justify-self-end text-sm font-light text-muted-foreground">
-							{data.addresses}
-						</span>
-					</div>
-					<Separator />
-					<div class="grid grid-cols-2 items-center gap-x-2 gap-y-1">
-						<span>In</span>
-						<div class="justify-self-end text-sm font-light text-muted-foreground">
-							<span>
-								{cpuUsage.toFixed(2)}
+					{#each data.networks as network (network.iface)}
+						<div class="grid grid-cols-2 items-center gap-x-2 gap-y-1">
+							<span>{network.iface}</span>
+							<span class="justify-self-end text-sm font-light text-muted-foreground">
+								{network.address}
 							</span>
-							<span> kb/s </span>
 						</div>
-						<span>Out</span>
-						<div class="justify-self-end text-sm font-light text-muted-foreground">
-							<span>
-								{cpuUsage.toFixed(2)}
-							</span>
-							<span> kb/s </span>
+						<Separator />
+						<div class="grid grid-cols-2 items-center gap-x-2 gap-y-1">
+							<span>In</span>
+							<div class="justify-self-end text-sm font-light text-muted-foreground">
+								<span>
+									{cpuUsage.toFixed(2)}
+								</span>
+								<span> kb/s </span>
+							</div>
+							<span>Out</span>
+							<div class="justify-self-end text-sm font-light text-muted-foreground">
+								<span>
+									{cpuUsage.toFixed(2)}
+								</span>
+								<span> kb/s </span>
+							</div>
 						</div>
-					</div>
+					{/each}
 				</div>
 			</Card.Content>
 		</Card.Root>

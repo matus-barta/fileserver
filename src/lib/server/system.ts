@@ -1,7 +1,7 @@
 import os from 'os';
 import { readFileSync, statfsSync } from 'fs';
 import { parseOsRelease } from '$lib/utils/osRelease';
-import { OSUtils } from 'node-os-utils';
+import si from 'systeminformation';
 
 export const hostname = () => os.hostname();
 
@@ -17,20 +17,28 @@ export const osPrettyName = () => {
 
 export const uptime = () => os.uptime();
 
-export const cpuModel = () => {
-	const osutils = new OSUtils();
-
-	return osutils.cpu.model();
+export const cpuModel = async () => {
+	return si
+		.cpu()
+		.then((data) => {
+			return `${data.manufacturer} ${data.brand} CPU @ ${data.speed} GHz`;
+		})
+		.catch((error) => {
+			console.error(error);
+			return '';
+		});
 };
 
 export const cpuCores = async () => {
-	const osutils = new OSUtils();
-
-	const cpuCoreCount = await osutils.cpu.coreCount();
-	if (cpuCoreCount.success) {
-		return cpuCoreCount.data;
-	}
-	return null;
+	return si
+		.cpu()
+		.then((data) => {
+			return { logical: data.cores, physical: data.physicalCores };
+		})
+		.catch((error) => {
+			console.error(error);
+			return null;
+		});
 };
 
 export const volumeFree = (path: string) => {

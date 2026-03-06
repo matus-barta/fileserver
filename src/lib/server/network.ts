@@ -1,16 +1,23 @@
 import { networkInterfaces } from 'os';
 
-export function addresses() {
+export interface AddressInfo {
+	iface: string;
+	address: string;
+}
+
+export function networks(): AddressInfo[] {
 	const interfaces = networkInterfaces();
-	const addresses = [];
-	for (const iface of Object.values(interfaces)) {
+	const result: AddressInfo[] = [];
+
+	for (const [name, iface] of Object.entries(interfaces)) {
 		if (!iface) continue;
 
-		for (const address of iface) {
-			if (address.family === 'IPv4' && !address.internal) {
-				addresses.push(address.address);
+		for (const addr of iface) {
+			if (addr.family === 'IPv4' && !addr.internal) {
+				result.push({ iface: name, address: addr.address });
 			}
 		}
 	}
-	return addresses;
+
+	return result;
 }

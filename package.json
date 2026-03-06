@@ -52,6 +52,6 @@
 	},
 	"dependencies": {
 		"mode-watcher": "^1.1.0",
-		"node-os-utils": "^2.0.1"
+		"systeminformation": "^5.31.3"
 	}
 }
