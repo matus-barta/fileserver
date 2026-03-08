@@ -45,6 +45,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.2.1(vite@7.3.1(@types/node@24.10.15)(jiti@2.6.1)(lightningcss@1.31.1))
+      '@tanstack/table-core':
+        specifier: ^8.21.3
+        version: 8.21.3
       '@types/node':
         specifier: ^24
         version: 24.10.15
@@ -695,6 +698,10 @@ packages:
     resolution: {integrity: sha512-TBf2sJjYeb28jD2U/OhwdW0bbOsxkWPwQ7SrqGf9sVcoYwZj7rkXljroBO9wKBut9XnmQLXanuDUeqQK0lGg/w==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7
+
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
+    engines: {node: '>=12'}
 
   '@testing-library/svelte-core@1.0.0':
     resolution: {integrity: sha512-VkUePoLV6oOYwSUvX6ShA8KLnJqZiYMIbP2JW2t0GLWLkJxKGvuH5qrrZBV/X7cXFnLGuFQEC7RheYiZOW68KQ==}
@@ -2241,6 +2248,8 @@ snapshots:
       '@tailwindcss/oxide': 4.2.1
       tailwindcss: 4.2.1
       vite: 7.3.1(@types/node@24.10.15)(jiti@2.6.1)(lightningcss@1.31.1)
+
+  '@tanstack/table-core@8.21.3': {}
 
   '@testing-library/svelte-core@1.0.0(svelte@5.53.6)':
     dependencies:
