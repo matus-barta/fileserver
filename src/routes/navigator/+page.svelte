@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Toolbar from '$lib/components/toolbar.svelte';
 	import * as ButtonGroup from '$lib/components/ui/button-group/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -10,6 +10,25 @@
 	import RefreshCw from '@lucide/svelte/icons/refresh-cw';
 	import Copy from '@lucide/svelte/icons/copy';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
+	import { columns, type Node } from './columns';
+	import DataTable from './data-table.svelte';
+
+	const nodes: Node[] = [
+		{
+			type: 'file',
+			name: 'aaaaa',
+			size: 0,
+			modified: 0,
+			created: 0
+		},
+		{
+			type: 'file',
+			name: 'asdasda',
+			size: 0,
+			modified: 0,
+			created: 0
+		}
+	];
 </script>
 
 <Toolbar>
@@ -38,4 +57,4 @@
 	</ButtonGroup.Root>
 </Toolbar>
 
-<navigator> </navigator>
+<DataTable data={nodes} {columns} />
