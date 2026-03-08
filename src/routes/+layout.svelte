@@ -19,9 +19,9 @@
 
 <Sidebar.Provider style="--sidebar-width: 19rem;">
 	<AppSidebar />
-	<Sidebar.Inset>
+	<Sidebar.Inset class="h-screen">
 		<header class="flex h-16 shrink-0 items-center justify-between px-4">
-			<div class="flex shrink-0 items-center gap-2">
+			<div class="flex h-full shrink-0 items-center gap-2">
 				<Sidebar.Trigger class="-ms-1" />
 				<Separator orientation="vertical" class="me-2 data-[orientation=vertical]:h-4" />
 				<span>
@@ -30,7 +30,7 @@
 					<span>{data.system.prettyName}</span>
 				</span>
 			</div>
-			<div class="flex gap-2">
+			<div class="flex h-full items-center gap-2">
 				<Button href="https://github.com/matus-barta/fileserver" variant="ghost">
 					<Github />
 					<span class="truncate text-xs leading-tight text-muted-foreground">{data.ghStars}</span>
@@ -38,7 +38,7 @@
 				<DarkModeSwitcher />
 			</div>
 		</header>
-		<div class="flex flex-1 flex-col gap-4 p-4">
+		<div class="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
 			{@render children()}
 		</div>
 	</Sidebar.Inset>
