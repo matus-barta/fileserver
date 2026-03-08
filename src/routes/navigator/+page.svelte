@@ -9,6 +9,7 @@
 	import CornerRightUp from '@lucide/svelte/icons/corner-right-up';
 	import RefreshCw from '@lucide/svelte/icons/refresh-cw';
 	import Copy from '@lucide/svelte/icons/copy';
+	import Trash2 from '@lucide/svelte/icons/trash-2';
 </script>
 
 <Toolbar>
@@ -25,6 +26,9 @@
 	</Button>
 	<Button size="icon" variant="outline">
 		<RefreshCw />
+	</Button>
+	<Button size="icon" variant="outline">
+		<Trash2 />
 	</Button>
 	<ButtonGroup.Root class="w-full">
 		<Input value="akask" height={10} />
