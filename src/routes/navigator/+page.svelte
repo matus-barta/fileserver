@@ -5,6 +5,8 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
+	import { Label } from '$lib/components/ui/label/index.js';
+	import { Switch } from '$lib/components/ui/switch/index.js';
 
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import SearchIcon from '@lucide/svelte/icons/search';
@@ -14,41 +16,22 @@
 	import Copy from '@lucide/svelte/icons/copy';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
 
-	import { columns, type Node } from './columns';
+	import { columns } from './columns';
+	import type { Node } from '$lib/types/fs';
 	import DataTable from './data-table.svelte';
 	import type { Table as TanStackTable } from '@tanstack/table-core';
 
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { cn } from '$lib/utils';
-
-	const mounts = [{ value: '/' }, { value: '/mnt/smb' }];
+	import { mounts } from '$lib/config';
+	import { list } from '$lib/api/navigator.remote';
 
 	let mount = $state(mounts[0].value);
 	const triggerContent = $derived(mounts.find((f) => f.value === mount)?.value);
 
-	const nodes: Node[] = [
-		{
-			type: 'file',
-			name: 'aaaaa',
-			size: 0,
-			modified: 0,
-			created: 0
-		},
-		{
-			type: 'file',
-			name: 'asdasda',
-			size: 0,
-			modified: 0,
-			created: 0
-		},
-		{
-			type: 'folder',
-			name: 'klsmlokd',
-			size: 0,
-			modified: 0,
-			created: 0
-		}
-	];
+	let path = $derived(mount);
+	let folderSize = $state(false);
+	const nodes = $derived(await list({ path, folderSize }));
 
 	// svelte-ignore non_reactive_update
 	let table: TanStackTable<Node> | undefined;
@@ -73,12 +56,20 @@
 		<Button size="icon" variant="outline">
 			<Trash2 />
 		</Button>
+		<div
+			class="flex h-9 items-center space-x-2 rounded-md border bg-background px-2 shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
+		>
+			<Switch id="airplane-mode" bind:checked={folderSize} />
+			<Label for="airplane-mode" class="text-xs font-light text-muted-foreground"
+				>Folder size (slow)</Label
+			>
+		</div>
 	</div>
 {/snippet}
 
-{#snippet path(cls: string)}
+{#snippet pathSnippet(cls: string)}
 	<ButtonGroup.Root class={cn(cls)}>
-		<Input value="akask" height={10} />
+		<Input bind:value={path} height={10} />
 		<Button size="icon" variant="outline">
 			<Copy />
 		</Button>
@@ -121,7 +112,7 @@
 	{#if innerWidth.current > 1280}
 		<Toolbar class="flex flex-row">
 			{@render navBtns()}
-			{@render path('flex-2')}
+			{@render pathSnippet('flex-2')}
 			{@render search('flex-1')}
 			{@render mountPoint()}
 		</Toolbar>
@@ -129,7 +120,7 @@
 		<Toolbar class="flex flex-col">
 			<div class="flex w-full flex-row gap-3">
 				{@render navBtns()}
-				{@render path('w-full')}
+				{@render pathSnippet('w-full')}
 			</div>
 
 			<div class="flex w-full flex-row gap-3">
@@ -140,7 +131,7 @@
 	{:else if innerWidth.current > 767}
 		<Toolbar class="flex flex-col items-start">
 			{@render navBtns()}
-			{@render path('w-full')}
+			{@render pathSnippet('w-full')}
 
 			{@render search('w-full')}
 			{@render mountPoint('w-full')}
@@ -149,7 +140,7 @@
 		<Toolbar class="flex flex-col">
 			<div class="flex w-full flex-row gap-3">
 				{@render navBtns()}
-				{@render path('w-full')}
+				{@render pathSnippet('w-full')}
 			</div>
 
 			<div class="flex w-full flex-row gap-3">

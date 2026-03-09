@@ -9,14 +9,7 @@ import DataTableModifiedButton from './data-table-modified-button.svelte';
 import DataTableCreatedButton from './data-table-created-button.svelte';
 import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 import DataTableNodeType from './data-table-node-type.svelte';
-
-export type Node = {
-	type: 'file' | 'folder';
-	name: string;
-	size: number;
-	modified: number;
-	created: number;
-};
+import type { Node } from '$lib/types/fs';
 
 export const columns: ColumnDef<Node>[] = [
 	{
@@ -103,9 +96,9 @@ export const columns: ColumnDef<Node>[] = [
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
-			const modifiedCellSnippet = createRawSnippet<[{ modified: number }]>((getModified) => {
+			const modifiedCellSnippet = createRawSnippet<[{ modified: Date | null }]>((getModified) => {
 				const { modified } = getModified();
-				const formatted = modified;
+				const formatted = modified == null ? '' : modified.toLocaleString();
 				return {
 					render: () => `<div class="text-end font-medium pr-3">${formatted}</div>`
 				};
@@ -126,9 +119,9 @@ export const columns: ColumnDef<Node>[] = [
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
-			const createdCellSnippet = createRawSnippet<[{ created: number }]>((getCreated) => {
+			const createdCellSnippet = createRawSnippet<[{ created: Date | null }]>((getCreated) => {
 				const { created } = getCreated();
-				const formatted = created;
+				const formatted = created == null ? '' : created.toLocaleString();
 				return {
 					render: () => `<div class="text-end font-medium pr-3">${formatted}</div>`
 				};
