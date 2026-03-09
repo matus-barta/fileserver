@@ -40,6 +40,13 @@
 			size: 0,
 			modified: 0,
 			created: 0
+		},
+		{
+			type: 'folder',
+			name: 'klsmlokd',
+			size: 0,
+			modified: 0,
+			created: 0
 		}
 	];
 

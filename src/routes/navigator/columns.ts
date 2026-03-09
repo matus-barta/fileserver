@@ -8,6 +8,7 @@ import DataTableSizeButton from './data-table-size-button.svelte';
 import DataTableModifiedButton from './data-table-modified-button.svelte';
 import DataTableCreatedButton from './data-table-created-button.svelte';
 import { Checkbox } from '$lib/components/ui/checkbox/index.js';
+import DataTableNodeType from './data-table-node-type.svelte';
 
 export type Node = {
 	type: 'file' | 'folder';
@@ -37,7 +38,20 @@ export const columns: ColumnDef<Node>[] = [
 		enableHiding: false
 	},
 	{
+		id: 'type',
+		meta: {
+			class: 'pr-0 text-right pl-4'
+		},
+		cell: ({ row }) => {
+			// You can pass whatever you need from `row.original` to the component
+			return renderComponent(DataTableNodeType, { type: row.original.type });
+		}
+	},
+	{
 		accessorKey: 'name',
+		meta: {
+			class: 'px-0'
+		},
 		header: ({ column }) =>
 			renderComponent(DataTableNameButton, {
 				onclick: column.getToggleSortingHandler()
