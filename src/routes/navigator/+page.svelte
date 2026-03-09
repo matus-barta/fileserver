@@ -36,6 +36,15 @@
 	let path = $derived(history[historyIndex]);
 	let tempPath = $derived(path);
 
+	$effect(() => {
+		const item = localStorage.getItem('path');
+		if (item) path = JSON.parse(item);
+	});
+
+	$effect(() => {
+		localStorage.setItem('path', JSON.stringify(path));
+	});
+
 	let folderSize = $state(false);
 	const nodes = $derived(await list({ path, folderSize }));
 
