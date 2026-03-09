@@ -19,7 +19,7 @@
 
 	import { columns } from './columns';
 	import type { Node } from '$lib/types/fs';
-	import DataTable from './data-table.svelte';
+	import DataTable from '$lib/components/data-table.svelte';
 	import type { Table as TanStackTable } from '@tanstack/table-core';
 
 	import { innerWidth } from 'svelte/reactivity/window';
@@ -114,6 +114,10 @@
 		history.push(tempPath);
 		historyIndex++;
 		path = tempPath;
+	}
+
+	function handleSelect(node: Node) {
+		if (node.type !== 'file') navigate(node.name);
 	}
 </script>
 
@@ -248,4 +252,4 @@
 	{/if}
 {/if}
 
-<DataTable data={nodes} {columns} bind:table onSelect={navigate} />
+<DataTable data={nodes} {columns} bind:table onRowDoubleClick={handleSelect} />

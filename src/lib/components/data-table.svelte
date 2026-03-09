@@ -11,20 +11,21 @@
 	import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import type { Table as TanStackTable } from '@tanstack/table-core';
-	import type { Node } from '$lib/types/fs';
 
 	type DataTableProps<TData, TValue> = {
 		columns: ColumnDef<TData, TValue>[];
 		data: TData[];
 		table?: TanStackTable<TData>;
-		onSelect: (path: string) => void;
+		onRowClick?: (row: TData) => void;
+		onRowDoubleClick?: (row: TData) => void;
 	};
 
 	let {
 		data,
 		columns,
 		table = $bindable<TanStackTable<TData>>(),
-		onSelect
+		onRowClick,
+		onRowDoubleClick
 	}: DataTableProps<TData, TValue> = $props();
 
 	let sorting = $state<SortingState>([]);
@@ -75,12 +76,6 @@
 			}
 		}
 	});
-
-	function navigate(node: Node) {
-		if (node.type != 'file') {
-			onSelect(node.name);
-		}
-	}
 </script>
 
 <div class="rounded-md border bg-sidebar">
@@ -105,7 +100,8 @@
 			{#each table.getRowModel().rows as row (row.id)}
 				<Table.Row
 					data-state={row.getIsSelected() && 'selected'}
-					ondblclick={() => navigate(row.original as Node)}
+					onclick={() => onRowClick?.(row.original)}
+					ondblclick={() => onRowDoubleClick?.(row.original)}
 				>
 					{#each row.getVisibleCells() as cell (cell.id)}
 						<Table.Cell class={cell.column.columnDef.meta?.class}>
