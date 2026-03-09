@@ -106,11 +106,6 @@
 		historyIndex++;
 		path = tempPath;
 	}
-
-	$effect(() => {
-		console.log(history);
-		console.log(historyIndex);
-	});
 </script>
 
 {#snippet navBtns()}
