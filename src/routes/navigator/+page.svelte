@@ -19,7 +19,7 @@
 
 	import { columns } from './columns';
 	import type { Node } from '$lib/types/fs';
-	import DataTable from '$lib/components/data-table.svelte';
+	import DataTable from '$lib/components/data-table/data-table.svelte';
 	import type { Table as TanStackTable } from '@tanstack/table-core';
 
 	import { innerWidth } from 'svelte/reactivity/window';

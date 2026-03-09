@@ -7,7 +7,7 @@ import DataTableNameButton from './data-table-name-button.svelte';
 import DataTableSizeButton from './data-table-size-button.svelte';
 import DataTableModifiedButton from './data-table-modified-button.svelte';
 import DataTableCreatedButton from './data-table-created-button.svelte';
-import { Checkbox } from '$lib/components/ui/checkbox/index.js';
+import Checkbox from '$lib/components/data-table/data-table-checkbox.svelte';
 import DataTableNodeType from './data-table-node-type.svelte';
 import type { Node } from '$lib/types/fs';
 
