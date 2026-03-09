@@ -5,8 +5,8 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
-	import { Switch } from '$lib/components/ui/switch/index.js';
+	// import { Label } from '$lib/components/ui/label/index.js';
+	// import { Switch } from '$lib/components/ui/switch/index.js';
 
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import SearchIcon from '@lucide/svelte/icons/search';
@@ -15,6 +15,7 @@
 	import RefreshCw from '@lucide/svelte/icons/refresh-cw';
 	import Copy from '@lucide/svelte/icons/copy';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
+	import House from '@lucide/svelte/icons/house';
 
 	import { columns } from './columns';
 	import type { Node } from '$lib/types/fs';
@@ -29,47 +30,138 @@
 	let mount = $state(mounts[0].value);
 	const triggerContent = $derived(mounts.find((f) => f.value === mount)?.value);
 
-	let path = $derived(mount);
+	let history: string[] = $derived([mount]);
+	let historyIndex = $state(0);
+
+	let path = $derived(history[historyIndex]);
+	let tempPath = $derived(path);
+
 	let folderSize = $state(false);
 	const nodes = $derived(await list({ path, folderSize }));
 
 	// svelte-ignore non_reactive_update
 	let table: TanStackTable<Node> | undefined;
+
+	function changeMount(mount: string) {
+		history = [mount];
+		historyIndex = 0;
+	}
+
+	function navigate(folder: string) {
+		const newPath = `${path.replace(/\/$/, '')}/${folder}/`; //This prevents accidental //
+		// remove any "forward" history
+		history = history.slice(0, historyIndex + 1);
+
+		history.push(newPath);
+		historyIndex++;
+
+		path = newPath;
+	}
+
+	function backward() {
+		if (historyIndex === 0) return;
+
+		historyIndex--;
+		path = history[historyIndex];
+	}
+
+	function forward() {
+		if (historyIndex >= history.length - 1) return;
+
+		historyIndex++;
+		path = history[historyIndex];
+	}
+	function up() {
+		if (path === '/') return;
+
+		const segments = path.split('/').filter(Boolean);
+		segments.pop();
+
+		const newPath = '/' + (segments.length ? segments.join('/') + '/' : '');
+
+		// remove forward history
+		history = history.slice(0, historyIndex + 1);
+
+		history.push(newPath);
+		historyIndex++;
+
+		path = newPath;
+	}
+
+	function canGoBack() {
+		return historyIndex > 0;
+	}
+
+	function canGoForward() {
+		return historyIndex < history.length - 1;
+	}
+
+	// User confirms a path (Enter or blur)
+	function confirmPath() {
+		if (tempPath === path) return;
+
+		// remove any "forward" history
+		history = history.slice(0, historyIndex + 1);
+		history.push(tempPath);
+		historyIndex++;
+		path = tempPath;
+	}
+
+	$effect(() => {
+		console.log(history);
+		console.log(historyIndex);
+	});
 </script>
 
 {#snippet navBtns()}
 	<div class="flew-row flex w-fit gap-3">
 		<ButtonGroup.Root>
-			<Button size="icon" variant="outline">
+			<Button size="icon" variant="outline" onclick={() => backward()} disabled={!canGoBack()}>
 				<ArrowLeft />
 			</Button>
-			<Button size="icon" variant="outline">
+			<Button size="icon" variant="outline" onclick={() => forward()} disabled={!canGoForward()}>
 				<ArrowRight />
 			</Button>
 		</ButtonGroup.Root>
-		<Button size="icon" variant="outline">
+		<Button size="icon" variant="outline" onclick={() => up()} disabled={path == '/'}>
 			<CornerRightUp />
 		</Button>
 		<Button size="icon" variant="outline">
 			<RefreshCw />
 		</Button>
+		<Button
+			size="icon"
+			variant="outline"
+			onclick={() => {
+				changeMount(mount);
+			}}
+		>
+			<House />
+		</Button>
 		<Button size="icon" variant="outline">
 			<Trash2 />
 		</Button>
-		<div
-			class="flex h-9 items-center space-x-2 rounded-md border bg-background px-2 shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
+		<!-- <div
+			class="flex h-9 w-fit flex-none items-center space-x-2 rounded-md border bg-background px-2 shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
 		>
 			<Switch id="airplane-mode" bind:checked={folderSize} />
 			<Label for="airplane-mode" class="text-xs font-light text-muted-foreground"
 				>Folder size (slow)</Label
 			>
-		</div>
+		</div> -->
 	</div>
 {/snippet}
 
 {#snippet pathSnippet(cls: string)}
 	<ButtonGroup.Root class={cn(cls)}>
-		<Input bind:value={path} height={10} />
+		<Input
+			bind:value={tempPath}
+			height={10}
+			class="font-light"
+			onkeydown={(e) => {
+				if (e.key == 'Enter') confirmPath();
+			}}
+		/>
 		<Button size="icon" variant="outline">
 			<Copy />
 		</Button>
@@ -95,9 +187,10 @@
 {/snippet}
 
 {#snippet mountPoint(cls?: string)}
-	<Select.Root type="single" bind:value={mount}>
+	<Select.Root type="single" bind:value={mount} onValueChange={() => changeMount(mount)}>
 		<Select.Trigger class={cn('min-w-40', cls)}>{triggerContent}</Select.Trigger>
 		<Select.Content>
+			<Select.Label>Change mount point</Select.Label>
 			{#each mounts as mount (mount.value)}
 				<Select.Item value={mount.value} label={mount.value}>
 					{mount.value}
@@ -151,4 +244,4 @@
 	{/if}
 {/if}
 
-<DataTable data={nodes} {columns} bind:table />
+<DataTable data={nodes} {columns} bind:table onSelect={navigate} />

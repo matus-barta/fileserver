@@ -53,7 +53,8 @@ export const columns: ColumnDef<Node>[] = [
 			const nameCellSnippet = createRawSnippet<[{ name: string }]>((getName) => {
 				const { name } = getName();
 				return {
-					render: () => `<div class="font-medium pl-3">${name}</div>`
+					render: () =>
+						`<div class="font-medium pl-3 overflow-clip max-w-md xl:max-w-xl 2xl:max-w-4xl">${name}</div>`
 				};
 			});
 
