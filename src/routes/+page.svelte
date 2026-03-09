@@ -4,6 +4,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Progress } from '$lib/components/ui/progress/index.js';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 
 	import { availableMemory, avgCpuUsage, usedMemory } from '$lib/api/stats.remote';
 
@@ -37,11 +38,14 @@
 				<Card.Title>System Usage</Card.Title>
 			</Card.Header>
 			<Card.Content>
-				<div class="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-sm font-light">
-					<span>CPU</span>
-					<Progress value={cpuUsage} />
-					<span class="justify-self-end text-muted-foreground">{cpuUsage.toFixed(2)}%</span>
-					{#if memUsage}
+				{#if memUsage}
+					<div
+						class="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-sm font-light"
+					>
+						<span>CPU</span>
+						<Progress value={cpuUsage} />
+						<span class="justify-self-end text-muted-foreground">{cpuUsage.toFixed(2)}%</span>
+
 						<span>Memory</span>
 						<Progress value={memUsage.value} max={memTotal.value} />
 						<div class="flex flex-row gap-0.5 justify-self-end text-muted-foreground">
@@ -49,8 +53,13 @@
 							<span>/</span>
 							<span>{`${memTotal.value} ${memTotal.unit}`}</span>
 						</div>
-					{/if}
-				</div>
+					</div>
+				{:else}
+					<div class="flex flex-col gap-2">
+						<Skeleton class="h-2 w-full py-2" />
+						<Skeleton class="h-2 w-full py-2" />
+					</div>
+				{/if}
 			</Card.Content>
 		</Card.Root>
 
@@ -98,6 +107,8 @@
 									<span>
 										{formatBitRate(networksStats[network.iface]?.rx_sec)}
 									</span>
+								{:else}
+									<Skeleton class="h-2 w-20 py-2" />
 								{/if}
 							</div>
 							<span>Out</span>
@@ -106,6 +117,8 @@
 									<span>
 										{formatBitRate(networksStats[network.iface]?.tx_sec)}
 									</span>
+								{:else}
+									<Skeleton class="h-2 w-20 py-2" />
 								{/if}
 							</div>
 						</div>
