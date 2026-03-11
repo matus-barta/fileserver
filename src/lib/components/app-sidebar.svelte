@@ -15,6 +15,7 @@
 	import User from '@lucide/svelte/icons/user';
 	import Settings from '@lucide/svelte/icons/settings';
 	import History from '@lucide/svelte/icons/history';
+	import { resolve } from '$app/paths';
 
 	interface navBar {
 		navMain: {
@@ -54,7 +55,7 @@
 				items: [
 					{ title: 'SMB', url: '/shares/smb' },
 					{ title: 'NFS', url: '/shares/nfs' },
-					{ title: 'iSCSI', url: '#' }
+					{ title: 'iSCSI', url: '/shares/iscsi' }
 				]
 			},
 			{
@@ -90,7 +91,7 @@
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton size="lg">
 					{#snippet child({ props })}
-						<a href="/" {...props}>
+						<a href={resolve('/')} {...props}>
 							<div
 								class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
 							>
@@ -132,6 +133,7 @@
 												<Sidebar.MenuSubItem>
 													<Sidebar.MenuSubButton isActive={isApp(subItem.url)}>
 														{#snippet child({ props })}
+															// eslint-disable-next-line svelte/no-navigation-without-resolve
 															<a href={subItem.url} {...props}>
 																<span>{subItem.title}</span>
 															</a>
@@ -148,6 +150,7 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={isApp(item.url)}>
 								{#snippet child({ props })}
+									// eslint-disable-next-line svelte/no-navigation-without-resolve
 									<a href={item.url} class="font-medium" {...props}>
 										<item.icon />
 										<span>{item.title}</span>
