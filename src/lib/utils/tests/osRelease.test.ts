@@ -1,25 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getInitials } from './userName';
-
-describe('Get correct initials', () => {
-	it('Firstname and Lastname', () => {
-		expect(getInitials('Janko Hrasko')).toBe('JH');
-	});
-	it('Firstname and Lastname but it input is lowercase', () => {
-		expect(getInitials('janko hrasko')).toBe('JH');
-	});
-	it('Only one name', () => {
-		expect(getInitials('Adele')).toBe('A');
-	});
-	it('Firstname, Middlename, Lastname', () => {
-		expect(getInitials('Jay Jonah Jameson')).toBe('JJJ');
-	});
-	it('null input', () => {
-		expect(getInitials(null)).toBe('');
-	});
-});
-
-import { parseOsRelease } from './osRelease';
+import { parseOsRelease } from '../osRelease';
 
 describe('parseOsRelease', () => {
 	it('parses basic key-value pairs', () => {
@@ -159,80 +139,5 @@ LOGO=ubuntu-logo
 
 	it('handles empty input', () => {
 		expect(parseOsRelease('')).toEqual({});
-	});
-});
-
-import { formatUptime } from './uptimeFormat';
-
-describe('formatUptime', () => {
-	it('formats seconds only', () => {
-		expect(formatUptime(45)).toBe('45s');
-	});
-
-	it('formats minutes and seconds', () => {
-		expect(formatUptime(125)).toBe('2m 5s');
-	});
-
-	it('formats hours minutes seconds', () => {
-		expect(formatUptime(3665)).toBe('1h 1m 5s');
-	});
-
-	it('formats days hours minutes seconds', () => {
-		expect(formatUptime(90061)).toBe('1d 1h 1m 1s');
-	});
-
-	it('formats exact hour', () => {
-		expect(formatUptime(3600)).toBe('1h');
-	});
-
-	it('formats exact day', () => {
-		expect(formatUptime(86400)).toBe('1d');
-	});
-
-	it('returns empty string for 0 seconds', () => {
-		expect(formatUptime(0)).toBe('');
-	});
-
-	it('handles large values', () => {
-		expect(formatUptime(172800)).toBe('2d');
-	});
-});
-
-import { formatBytes } from './formatBytes';
-describe('formatBytes', () => {
-	it('returns bytes for 0', () => {
-		expect(formatBytes(0)).toEqual({ value: 0, unit: 'B' });
-	});
-
-	it('keeps bytes below 1 KiB', () => {
-		expect(formatBytes(512)).toEqual({ value: 512, unit: 'B' });
-	});
-
-	it('converts to KiB', () => {
-		expect(formatBytes(1024)).toEqual({ value: 1, unit: 'KiB' });
-	});
-
-	it('converts to MiB', () => {
-		expect(formatBytes(1024 ** 2)).toEqual({ value: 1, unit: 'MiB' });
-	});
-
-	it('converts to GiB', () => {
-		expect(formatBytes(1024 ** 3)).toEqual({ value: 1, unit: 'GiB' });
-	});
-
-	it('handles fractional values', () => {
-		expect(formatBytes(1536)).toEqual({ value: 1.5, unit: 'KiB' });
-	});
-
-	it('rounds to 2 decimals by default', () => {
-		expect(formatBytes(123456789)).toEqual({ value: 117.74, unit: 'MiB' });
-	});
-
-	it('respects custom decimal precision', () => {
-		expect(formatBytes(1536, 1)).toEqual({ value: 1.5, unit: 'KiB' });
-	});
-
-	it('handles very large values', () => {
-		expect(formatBytes(1024 ** 4)).toEqual({ value: 1, unit: 'TiB' });
 	});
 });
