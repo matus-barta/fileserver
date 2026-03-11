@@ -133,7 +133,6 @@
 												<Sidebar.MenuSubItem>
 													<Sidebar.MenuSubButton isActive={isApp(subItem.url)}>
 														{#snippet child({ props })}
-															// eslint-disable-next-line svelte/no-navigation-without-resolve
 															<a href={subItem.url} {...props}>
 																<span>{subItem.title}</span>
 															</a>
@@ -150,7 +149,6 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={isApp(item.url)}>
 								{#snippet child({ props })}
-									// eslint-disable-next-line svelte/no-navigation-without-resolve
 									<a href={item.url} class="font-medium" {...props}>
 										<item.icon />
 										<span>{item.title}</span>
