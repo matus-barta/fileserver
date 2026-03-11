@@ -1,12 +1,12 @@
-import type { PasswdEntry } from '$lib/types/creds';
+import type { GroupEntry } from '$lib/types/creds';
 
 export interface ParseResult {
-	entries: PasswdEntry[];
+	entries: GroupEntry[];
 	skipped: string[];
 }
 
-export function parsePasswd(content: string): ParseResult {
-	const entries: PasswdEntry[] = [];
+export function parseGroup(content: string): ParseResult {
+	const entries: GroupEntry[] = [];
 	const skipped: string[] = [];
 
 	const lines = content.split('\n');
@@ -18,29 +18,33 @@ export function parsePasswd(content: string): ParseResult {
 
 		const parts = line.split(':');
 
-		if (parts.length !== 7) {
+		if (parts.length !== 4) {
 			skipped.push(line);
 			continue;
 		}
 
-		const [username, password, uidStr, gidStr, gecos, home, shell] = parts;
+		const [groupname, password, gidStr, memberStr] = parts;
 
-		const uid = Number(uidStr);
 		const gid = Number(gidStr);
 
-		if (Number.isNaN(uid) || Number.isNaN(gid)) {
+		if (Number.isNaN(gid)) {
 			skipped.push(line);
 			continue;
 		}
 
+		const members =
+			memberStr.trim() === ''
+				? []
+				: memberStr
+						.split(',')
+						.map((m) => m.trim())
+						.filter(Boolean);
+
 		entries.push({
-			username,
+			groupname,
 			password,
-			uid,
 			gid,
-			gecos,
-			home,
-			shell
+			members
 		});
 	}
 
