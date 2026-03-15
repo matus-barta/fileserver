@@ -5,9 +5,8 @@ import type { UserWithGroups } from '$lib/types/creds';
 
 import DataTableActions from './data-table-actions.svelte';
 import DataTableGroups from './data-table-groups.svelte';
-import DataTableUserNameButton from '$lib/components/data-table/data-table-sort-label-button.svelte';
+import DataTableSortButton from '$lib/components/data-table/data-table-sort-label-button.svelte';
 import DataTableUserName from './data-table-username.svelte';
-import DataTableIdButton from './data-table-id-button.svelte';
 
 export const columns: ColumnDef<UserWithGroups>[] = [
 	{
@@ -18,7 +17,7 @@ export const columns: ColumnDef<UserWithGroups>[] = [
 			class: 'px-0'
 		},
 		header: ({ column }) =>
-			renderComponent(DataTableUserNameButton, {
+			renderComponent(DataTableSortButton, {
 				label: 'Username',
 				onclick: column.getToggleSortingHandler()
 			}),
@@ -32,7 +31,8 @@ export const columns: ColumnDef<UserWithGroups>[] = [
 		accessorFn: (row) => row.user.uid,
 		filterFn: 'includesString',
 		header: ({ column }) =>
-			renderComponent(DataTableIdButton, {
+			renderComponent(DataTableSortButton, {
+				label: 'UID',
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
