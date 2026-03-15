@@ -101,26 +101,25 @@
 						</div>
 						<Separator />
 						<div class="grid grid-cols-2 items-center gap-x-2 gap-y-1">
-							<span>In</span>
-							<div class="justify-self-end text-muted-foreground">
-								{#if networksStats}
-									<span>
-										{formatBitRate(networksStats[network.iface]?.rx_sec)}
-									</span>
-								{:else}
-									<Skeleton class="h-2 w-20 py-2" />
-								{/if}
-							</div>
-							<span>Out</span>
-							<div class="justify-self-end text-muted-foreground">
-								{#if networksStats}
-									<span>
-										{formatBitRate(networksStats[network.iface]?.tx_sec)}
-									</span>
-								{:else}
-									<Skeleton class="h-2 w-20 py-2" />
-								{/if}
-							</div>
+							{#snippet netStats(direction: 'In' | 'Out', networksStats: NetStatMap | null)}
+								<span>{direction}</span>
+								<div class="justify-self-end text-muted-foreground">
+									{#if networksStats != null}
+										<span>
+											{formatBitRate(
+												direction == 'In'
+													? networksStats[network.iface]?.rx_sec
+													: networksStats[network.iface]?.tx_sec
+											)}
+										</span>
+									{:else}
+										<Skeleton class="h-2 w-20 py-2" />
+									{/if}
+								</div>
+							{/snippet}
+
+							{@render netStats('In', networksStats)}
+							{@render netStats('Out', networksStats)}
 						</div>
 					{/each}
 				</div>
@@ -132,28 +131,18 @@
 			</Card.Header>
 			<Card.Content>
 				<div class="grid grid-cols-2 items-center gap-x-2 gap-y-1 text-sm font-light">
-					<span>Hostname</span>
-					<span class="justify-self-end text-muted-foreground">
-						{data.system.hostname}
-					</span>
-					<span>OS</span>
-					<span class="justify-self-end text-muted-foreground">
-						{data.system.prettyName}
-					</span>
-					<span>Uptime</span>
-					<span class="justify-self-end text-muted-foreground">
-						{formatUptime(uptime)}
-					</span>
-					<span>CPU model</span>
-					<span class="justify-self-end text-right text-muted-foreground">
-						{data.cpu.model}
-					</span>
-					<span>CPU cores</span>
-					<span class="justify-self-end text-muted-foreground"
-						>{`${data.cpu.cores?.physical}c/${data.cpu.cores?.logical}t`}</span
-					>
-					<span>Updates</span>
-					<span class="justify-self-end text-muted-foreground">TODO</span>
+					{#snippet sysInfo(key: string, value: string)}
+						<span>{key}</span>
+						<span class="justify-self-end text-right text-muted-foreground">
+							{value}
+						</span>
+					{/snippet}
+					{@render sysInfo('Hostname', data.system.hostname)}
+					{@render sysInfo('OS', data.system.prettyName)}
+					{@render sysInfo('Uptime', formatUptime(uptime))}
+					{@render sysInfo('CPU model', data.cpu.model)}
+					{@render sysInfo('CPU cores', `${data.cpu.cores?.physical}c/${data.cpu.cores?.logical}t`)}
+					{@render sysInfo('Updates', 'TODO')}
 				</div>
 			</Card.Content>
 		</Card.Root>
