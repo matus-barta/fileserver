@@ -19,6 +19,7 @@ export const columns: ColumnDef<UserWithGroups>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'Username',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) =>
@@ -33,6 +34,7 @@ export const columns: ColumnDef<UserWithGroups>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'UID',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {

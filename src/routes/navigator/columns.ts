@@ -45,6 +45,7 @@ export const columns: ColumnDef<Node>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'Name',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -69,6 +70,7 @@ export const columns: ColumnDef<Node>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'Size',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -94,6 +96,7 @@ export const columns: ColumnDef<Node>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'Modified',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -118,6 +121,7 @@ export const columns: ColumnDef<Node>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'Created',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {

@@ -29,6 +29,7 @@ export const columns: ColumnDef<GroupEntry>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'Groupname',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -51,6 +52,7 @@ export const columns: ColumnDef<GroupEntry>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: 'GID',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -72,6 +74,7 @@ export const columns: ColumnDef<GroupEntry>[] = [
 		header: ({ column }) =>
 			renderComponent(DataTableSortButton, {
 				label: '# of members',
+				isSorted: column.getIsSorted(),
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
