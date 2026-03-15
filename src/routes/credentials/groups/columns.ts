@@ -4,10 +4,21 @@ import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/in
 import type { GroupEntry } from '$lib/types/creds';
 
 import DataTableActions from './data-table-actions.svelte';
+import DataTableGroupType from './data-table-group-type.svelte';
 import DataTableMembers from './data-table-members.svelte';
 import DataTableSortButton from '$lib/components/data-table/data-table-sort-label-button.svelte';
 
 export const columns: ColumnDef<GroupEntry>[] = [
+	{
+		id: 'type',
+		meta: {
+			class: 'pr-0 text-right pl-4'
+		},
+		cell: ({ row }) => {
+			// You can pass whatever you need from `row.original` to the component
+			return renderComponent(DataTableGroupType, { group: row.original });
+		}
+	},
 	{
 		id: 'groupname',
 		accessorFn: (row) => row.groupname,
