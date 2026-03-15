@@ -10,6 +10,10 @@ const ListSchema = z.object({
 	folderSize: z.boolean().optional().default(false)
 });
 
+const PathSchema = z.object({
+	path: z.string()
+});
+
 export const list = query(ListSchema, async ({ path, folderSize }): Promise<Node[]> => {
 	try {
 		const entries = await fs.readdir(path, { withFileTypes: true });
@@ -70,5 +74,33 @@ export const list = query(ListSchema, async ({ path, folderSize }): Promise<Node
 		return nodes;
 	} catch {
 		return [];
+	}
+});
+
+/**
+ * @returns True if dir exists anything else is False
+ */
+export const isValidDirPath = query(PathSchema, async ({ path }): Promise<boolean> => {
+	try {
+		const stats = await fs.stat(path);
+		if (stats.isDirectory()) return true;
+		if (stats.isFile()) return false;
+		return false;
+	} catch {
+		return false; // path invalid
+	}
+});
+
+/**
+ * @returns True if dir or file exists
+ * */
+export const isValidPath = query(PathSchema, async ({ path }): Promise<boolean> => {
+	try {
+		const stats = await fs.stat(path);
+		if (stats.isDirectory()) return true;
+		if (stats.isFile()) return false;
+		return false;
+	} catch {
+		return false; // path invalid
 	}
 });

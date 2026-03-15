@@ -25,31 +25,37 @@
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { cn } from '$lib/utils';
 	import { mounts } from '$lib/config';
-	import { list } from '$lib/api/navigator.remote';
+	import { isValidDirPath, list } from '$lib/api/navigator.remote';
 
-	let mount = $state(mounts[0].value);
-	const triggerContent = $derived(mounts.find((f) => f.value === mount)?.value);
+	let history = $state<string[]>([
+		localStorage.getItem('path') ? JSON.parse(localStorage.getItem('path')!) : mounts[0].value
+	]);
 
-	let history: string[] = $derived([mount]);
 	let historyIndex = $state(0);
 
 	let path = $derived(history[historyIndex]);
 	let tempPath = $derived(path);
+	let validPath = $derived(isValidDirPath({ path: tempPath }));
 
-	$effect(() => {
-		const item = localStorage.getItem('path');
-		if (item) path = JSON.parse(item);
-	});
+	let mount = $derived(
+		mounts.find((m) => path === m.value || path.startsWith(m.value + '/'))?.value ?? '/'
+	);
+	const triggerContent = $derived(mounts.find((f) => f.value === mount)?.value);
+
+	const nodes = $derived(await list({ path }));
+
+	// svelte-ignore non_reactive_update
+	let table: TanStackTable<Node> | undefined;
 
 	$effect(() => {
 		localStorage.setItem('path', JSON.stringify(path));
 	});
 
-	let folderSize = $state(false);
-	const nodes = $derived(await list({ path, folderSize }));
-
-	// svelte-ignore non_reactive_update
-	let table: TanStackTable<Node> | undefined;
+	function pushPath(newPath: string) {
+		history = history.slice(0, historyIndex + 1);
+		history.push(newPath);
+		historyIndex++;
+	}
 
 	function changeMount(mount: string) {
 		history = [mount];
@@ -57,29 +63,18 @@
 	}
 
 	function navigate(folder: string) {
-		const newPath = `${path.replace(/\/$/, '')}/${folder}/`; //This prevents accidental //
-		// remove any "forward" history
-		history = history.slice(0, historyIndex + 1);
-
-		history.push(newPath);
-		historyIndex++;
-
-		path = newPath;
+		const newPath = `${path.replace(/\/$/, '')}/${folder}/`;
+		pushPath(newPath);
 	}
 
 	function backward() {
-		if (historyIndex === 0) return;
-
-		historyIndex--;
-		path = history[historyIndex];
+		if (historyIndex > 0) historyIndex--;
 	}
 
 	function forward() {
-		if (historyIndex >= history.length - 1) return;
-
-		historyIndex++;
-		path = history[historyIndex];
+		if (historyIndex < history.length - 1) historyIndex++;
 	}
+
 	function up() {
 		if (path === '/') return;
 
@@ -87,14 +82,7 @@
 		segments.pop();
 
 		const newPath = '/' + (segments.length ? segments.join('/') + '/' : '');
-
-		// remove forward history
-		history = history.slice(0, historyIndex + 1);
-
-		history.push(newPath);
-		historyIndex++;
-
-		path = newPath;
+		pushPath(newPath);
 	}
 
 	function canGoBack() {
@@ -105,15 +93,8 @@
 		return historyIndex < history.length - 1;
 	}
 
-	// User confirms a path (Enter or blur)
-	function confirmPath() {
-		if (tempPath === path) return;
-
-		// remove any "forward" history
-		history = history.slice(0, historyIndex + 1);
-		history.push(tempPath);
-		historyIndex++;
-		path = tempPath;
+	async function confirmPath() {
+		if (tempPath !== path && (await validPath)) pushPath(tempPath);
 	}
 
 	function handleSelect(node: Node) {
@@ -169,6 +150,8 @@
 			onkeydown={(e) => {
 				if (e.key == 'Enter') confirmPath();
 			}}
+			onblur={confirmPath}
+			aria-invalid={!(await validPath)}
 		/>
 		<Button size="icon" variant="outline">
 			<Copy />
