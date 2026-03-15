@@ -35,5 +35,10 @@
 </Toolbar>
 
 {#if data.usersWithGroups}
-	<DataTable data={data.usersWithGroups} {columns} bind:table />
+	<DataTable
+		data={data.usersWithGroups}
+		{columns}
+		bind:table
+		sorting={[{ id: 'username', desc: false }]}
+	/>
 {/if}

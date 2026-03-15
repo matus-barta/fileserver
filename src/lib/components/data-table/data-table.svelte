@@ -16,6 +16,7 @@
 		columns: ColumnDef<TData, TValue>[];
 		data: TData[];
 		table?: TanStackTable<TData>;
+		sorting?: SortingState;
 		onRowClick?: (row: TData) => void;
 		onRowDoubleClick?: (row: TData) => void;
 	};
@@ -24,11 +25,12 @@
 		data,
 		columns,
 		table = $bindable<TanStackTable<TData>>(),
+		sorting: initialSorting = [],
 		onRowClick,
 		onRowDoubleClick
 	}: DataTableProps<TData, TValue> = $props();
 
-	let sorting = $state<SortingState>([]);
+	let sorting = $derived(initialSorting);
 	let columnFilters = $state<ColumnFiltersState>([]);
 	let rowSelection = $state<RowSelectionState>({});
 
@@ -36,19 +38,18 @@
 		get data() {
 			return data;
 		},
-		// eslint-disable-next-line svelte/no-unused-svelte-ignore
-		// svelte-ignore state_referenced_locally
-		columns,
+
+		get columns() {
+			return columns;
+		},
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
 
 		onSortingChange: (updater) => {
-			if (typeof updater === 'function') {
-				sorting = updater(sorting);
-			} else {
-				sorting = updater;
-			}
+			const next = typeof updater === 'function' ? updater(sorting) : updater;
+
+			sorting = next;
 		},
 		onColumnFiltersChange: (updater) => {
 			if (typeof updater === 'function') {

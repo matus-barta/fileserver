@@ -252,4 +252,10 @@
 	{/if}
 {/if}
 
-<DataTable data={nodes} {columns} bind:table onRowDoubleClick={handleSelect} />
+<DataTable
+	data={nodes}
+	{columns}
+	bind:table
+	onRowDoubleClick={handleSelect}
+	sorting={[{ id: 'name', desc: false }]}
+/>

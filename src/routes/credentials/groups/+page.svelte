@@ -35,5 +35,10 @@
 </Toolbar>
 
 {#if data.groups}
-	<DataTable data={data.groups} {columns} bind:table />
+	<DataTable
+		data={data.groups}
+		{columns}
+		bind:table
+		sorting={[{ id: 'numOfMembers', desc: true }]}
+	/>
 {/if}
