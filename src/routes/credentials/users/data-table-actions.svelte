@@ -16,14 +16,10 @@
 		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end">
-		<DropdownMenu.Group>
-			<DropdownMenu.Label>TODO - not implemented</DropdownMenu.Label>
-			<DropdownMenu.Item onclick={() => navigator.clipboard.writeText(name)}>
-				Copy payment ID
-			</DropdownMenu.Item>
-		</DropdownMenu.Group>
+		<DropdownMenu.Item>Edit User</DropdownMenu.Item>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item>View customer</DropdownMenu.Item>
-		<DropdownMenu.Item>View payment details</DropdownMenu.Item>
+		<DropdownMenu.Item variant="destructive" onclick={() => navigator.clipboard.writeText(name)}>
+			Delete user
+		</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

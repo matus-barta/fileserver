@@ -3,12 +3,14 @@
 	import type { PageProps } from './$types';
 	import { columns } from './columns';
 	import type { Table as TanStackTable } from '@tanstack/table-core';
-
 	import DataTable from '$lib/components/data-table/data-table.svelte';
 	import Toolbar from '$lib/components/toolbar.svelte';
+
+	import { Button } from '$lib/components/ui/button/index.js';
 	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 
 	import SearchIcon from '@lucide/svelte/icons/search';
+	import Plus from '@lucide/svelte/icons/plus';
 
 	let { data }: PageProps = $props();
 
@@ -17,6 +19,10 @@
 </script>
 
 <Toolbar class="flex flex-row">
+	<Button variant="outline" class="font-light">
+		<Plus /> Add User
+	</Button>
+
 	<InputGroup.Root class="flex-1">
 		<InputGroup.Input
 			placeholder="Search by username..."
