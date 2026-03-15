@@ -5,3 +5,5 @@ export const reloadTime = 1000;
 export const mounts = [{ value: '/' }, { value: '/mnt/smb' }];
 
 export const loggedin = 'matus';
+
+export const hideRoot = true;

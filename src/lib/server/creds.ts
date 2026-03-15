@@ -1,3 +1,4 @@
+import { hideRoot } from '$lib/config';
 import type { GroupEntry, PasswdEntry, UserGroup } from '$lib/types/creds';
 import { parseGroup } from '$lib/utils/groupParser';
 import { parsePasswd } from '$lib/utils/passwdParser';
@@ -33,7 +34,7 @@ export function getServiceAccounts(entries: PasswdEntry[]): PasswdEntry[] {
 }
 
 export function isRealUser(entry: PasswdEntry, uidMin = 1000): boolean {
-	if (entry.username == 'root') return true;
+	if (entry.username == 'root') return !hideRoot;
 
 	if (entry.uid < uidMin) return false;
 	if (entry.home.startsWith('/home/') === false) return false;
