@@ -5,7 +5,7 @@ import type { UserWithGroups } from '$lib/types/creds';
 
 import DataTableActions from './data-table-actions.svelte';
 import DataTableGroups from './data-table-groups.svelte';
-import DataTableUserNameButton from './data-table-username-button.svelte';
+import DataTableUserNameButton from '$lib/components/data-table/data-table-sort-label-button.svelte';
 import DataTableUserName from './data-table-username.svelte';
 import DataTableIdButton from './data-table-id-button.svelte';
 
@@ -19,6 +19,7 @@ export const columns: ColumnDef<UserWithGroups>[] = [
 		},
 		header: ({ column }) =>
 			renderComponent(DataTableUserNameButton, {
+				label: 'Username',
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) =>

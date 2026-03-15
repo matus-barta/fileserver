@@ -3,10 +3,7 @@ import { createRawSnippet } from 'svelte';
 import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/index.js';
 import { formatBytes } from '$lib/utils/formatBytes';
 import DataTableActions from './data-table-actions.svelte';
-import DataTableNameButton from './data-table-name-button.svelte';
-import DataTableSizeButton from './data-table-size-button.svelte';
-import DataTableModifiedButton from './data-table-modified-button.svelte';
-import DataTableCreatedButton from './data-table-created-button.svelte';
+import DataTableSortButton from '$lib/components/data-table/data-table-sort-label-button.svelte';
 import Checkbox from '$lib/components/data-table/data-table-checkbox.svelte';
 import DataTableNodeType from './data-table-node-type.svelte';
 import type { Node } from '$lib/types/fs';
@@ -46,7 +43,8 @@ export const columns: ColumnDef<Node>[] = [
 			class: 'px-0'
 		},
 		header: ({ column }) =>
-			renderComponent(DataTableNameButton, {
+			renderComponent(DataTableSortButton, {
+				label: 'Name',
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -69,7 +67,8 @@ export const columns: ColumnDef<Node>[] = [
 			class: 'text-right'
 		},
 		header: ({ column }) =>
-			renderComponent(DataTableSizeButton, {
+			renderComponent(DataTableSortButton, {
+				label: 'Size',
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -93,7 +92,8 @@ export const columns: ColumnDef<Node>[] = [
 			class: 'text-right'
 		},
 		header: ({ column }) =>
-			renderComponent(DataTableModifiedButton, {
+			renderComponent(DataTableSortButton, {
+				label: 'Modified',
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
@@ -116,7 +116,8 @@ export const columns: ColumnDef<Node>[] = [
 			class: 'text-right'
 		},
 		header: ({ column }) =>
-			renderComponent(DataTableCreatedButton, {
+			renderComponent(DataTableSortButton, {
+				label: 'Created',
 				onclick: column.getToggleSortingHandler()
 			}),
 		cell: ({ row }) => {
