@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import type { PasswdEntry, UserGroup } from '$lib/types/creds';
-	import { detectAdminGroup, primaryGroup } from '$lib/utils/groupFilters';
+	import { detectAdminGroups, primaryGroup } from '$lib/utils/groupFilters';
 
 	type Props = {
 		user: PasswdEntry;
@@ -11,7 +11,7 @@
 	const { user, groups }: Props = $props();
 
 	// svelte-ignore state_referenced_locally
-	const adminGroups = detectAdminGroup(groups);
+	const adminGroups = detectAdminGroups(groups);
 	// svelte-ignore state_referenced_locally
 	const primaryGroups = primaryGroup(user, groups);
 </script>
